@@ -1,0 +1,11 @@
+2025-02-24 14:06:24.895628-06:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "CLIENTES" no encontrada
+Table "CLIENTES" not found; SQL statement:
+SELECT * FROM CLIENTES [42102-232]
+2025-02-24 14:10:16.243684-06:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLDataException: Conversión de datos fallida, convirtiendo "'1234-5678' (CLIENTS: ""DOCNUMBER"" INTEGER NOT NULL)"
+Data conversion error converting "'1234-5678' (CLIENTS: ""DOCNUMBER"" INTEGER NOT NULL)"; SQL statement:
+INSERT INTO CLIENTS ( id, name, 
+lastname, docnumber) values
+( 1,'Juan', 'Perez', '1234-5678'),
+(2,'Azucena', 'García', '2345-6789' ) [22018-232]
