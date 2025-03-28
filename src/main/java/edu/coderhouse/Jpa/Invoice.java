@@ -1,6 +1,8 @@
 package edu.coderhouse.Jpa;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,8 +24,8 @@ public class Invoice {
     @Column(name = "TOTAL", nullable = false)
     private double total;
 
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<InvoiceDetails> invoiceDetails;
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<InvoiceDetails> invoiceDetails = new ArrayList<>(); // Inicializar la lista
 
     public Invoice() {}
 

@@ -42,7 +42,12 @@ public class JpaApplication implements CommandLineRunner {
 
 			// Se crea una factura para el cliente
 			Invoice invoice = new Invoice(cliente, new Date(), 0.0);
-			invoice = invoiceService.crearInvoice(invoice);
+			try {
+				invoice = invoiceService.crearInvoice(invoice);  // Aquí puedes capturar la excepción si ocurre
+			} catch (Exception e) {
+				System.out.println("Error al crear la factura: " + e.getMessage());
+				return;  // Salir del método si hay un error
+			}
 
 			// Se crean detalles de factura con los productos comprados
 			InvoiceDetails detail1 = new InvoiceDetails(invoice, product1, 1, product1.getPrice());
@@ -63,11 +68,11 @@ public class JpaApplication implements CommandLineRunner {
 			modificarFactura(invoiceGuardada, new Product("Teclado Mecánico", "KEY789", 20, 80.50));
 
 			// Obtener y mostrar la factura modificada
-            Invoice invoiceModificada = null;
-            if (invoiceGuardada != null) {
-                invoiceModificada = invoiceService.getInvoiceById(invoiceGuardada.getId()).orElse(null);
-            }
-            imprimirFactura(invoiceModificada, "Factura Modificada: ");
+			Invoice invoiceModificada = null;
+			if (invoiceGuardada != null) {
+				invoiceModificada = invoiceService.getInvoiceById(invoiceGuardada.getId()).orElse(null);
+			}
+			imprimirFactura(invoiceModificada, "Factura Modificada: ");
 
 		} catch (Exception ex) {
 			ex.printStackTrace(System.out);
@@ -75,16 +80,23 @@ public class JpaApplication implements CommandLineRunner {
 	}
 
 	private void modificarFactura(Invoice invoice, Product nuevoProducto) {
-		// Guardar el nuevo producto
-		nuevoProducto = productService.crearProduct(nuevoProducto);
+		try {
+			// Guardar el nuevo producto
+			nuevoProducto = productService.crearProduct(nuevoProducto);
 
-		// Crear un nuevo detalle de factura
-		InvoiceDetails nuevoDetalle = new InvoiceDetails(invoice, nuevoProducto, 1, nuevoProducto.getPrice());
-		invoiceDetailsService.crearInvoiceDetails(nuevoDetalle);
+			// Crear un nuevo detalle de factura
+			InvoiceDetails nuevoDetalle = new InvoiceDetails(invoice, nuevoProducto, 1, nuevoProducto.getPrice());
+			invoiceDetailsService.crearInvoiceDetails(nuevoDetalle);
 
-		// Actualizar el total de la factura
-		invoice.setTotal(invoice.getTotal() + nuevoDetalle.getPrice());
-		invoiceService.crearInvoice(invoice);
+			// Actualizar el total de la factura
+			invoice.setTotal(invoice.getTotal() + nuevoDetalle.getPrice());
+
+			// Intentar guardar la factura actualizada
+			invoiceService.crearInvoice(invoice);  // Aquí puede haber una excepción
+		} catch (Exception e) {
+			System.out.println("Error al modificar la factura: " + e.getMessage());
+			// Aquí puedes manejar el error, por ejemplo, loggeando o tomando alguna otra acción
+		}
 	}
 
 	private void imprimirFactura(Invoice invoice, String mensaje) {
