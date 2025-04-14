@@ -44,7 +44,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"client\": {\r\n    \"id\": 1\r\n  },\r\n  \"invoiceDetails\": [\r\n    {\r\n      \"product\": {\r\n        \"id\": 2\r\n      },\r\n      \"amount\": 3,\r\n      \"price\": 20.0\r\n    },\r\n    {\r\n      \"product\": {\r\n        \"id\": 5\r\n      },\r\n      \"amount\": 2,\r\n      \"price\": 30.0\r\n    }\r\n  ]\r\n}\r\n",
+					"raw": "{\r\n  \"cliente\": {\r\n    \"clienteid\": 1\r\n  },\r\n  \"lineas\": [\r\n    {\r\n      \"cantidad\": 2,\r\n      \"producto\": {\r\n        \"productoid\": 1\r\n      }\r\n    },\r\n    {\r\n      \"cantidad\": 3,\r\n      \"producto\": {\r\n        \"productoid\": 2\r\n      }\r\n    }\r\n  ]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -118,6 +118,262 @@
 					"path": [
 						"invoice_details",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/client",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Juan Carlos\",\r\n  \"lastname\": \"Rodríguez\",\r\n  \"docNumber\": \"28456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/client/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"client",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/client",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Pedro\",\r\n  \"lastname\": \"Rodríguez\",\r\n  \"docNumber\": \"28456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/client",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/product",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Monitor Ultrawide LG\",\r\n  \"code\": \"MON-UW34\",\r\n  \"stock\": 15,\r\n  \"price\": 349.99\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/product",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Monitor Ultrawide LG\",\r\n  \"code\": \"MON-UW34\",\r\n  \"stock\": 15,\r\n  \"price\": 349.99\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/product/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Factura con cliente inexistente",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"cliente\": {\r\n    \"clienteid\": 9999\r\n  },\r\n  \"lineas\": [\r\n    {\r\n      \"cantidad\": 1,\r\n      \"producto\": {\r\n        \"productoid\": 1\r\n      }\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Factura con producto inexistente",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"cliente\": {\r\n    \"clienteid\": 1\r\n  },\r\n  \"lineas\": [\r\n    {\r\n      \"cantidad\": 1,\r\n      \"producto\": {\r\n        \"productoid\": 9999\r\n      }\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Factura con cantidad inválida",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"cliente\": {\r\n    \"clienteid\": 1\r\n  },\r\n  \"lineas\": [\r\n    {\r\n      \"cantidad\": 0,\r\n      \"producto\": {\r\n        \"productoid\": 1\r\n      }\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Factura con cantidad mayor al stock disponible",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"cliente\": {\r\n    \"clienteid\": 1\r\n  },\r\n  \"lineas\": [\r\n    {\r\n      \"cantidad\": 100,\r\n      \"producto\": {\r\n        \"productoid\": 1\r\n      }\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/invoice",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"invoice"
 					]
 				}
 			},

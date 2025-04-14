@@ -77,4 +77,5 @@ public class Product {
     public void setInvoiceDetails(List<InvoiceDetails> invoiceDetails) {
         this.invoiceDetails = invoiceDetails;
     }
+
 }

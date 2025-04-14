@@ -19,24 +19,28 @@ public class InvoiceController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getInvoiceById(@PathVariable("id") int id) {
-        Optional<Invoice> invoice = invoiceService.getInvoiceById(id);
+        Optional<Invoice> invoiceOpt = invoiceService.getInvoiceById(id);
 
-        if (invoice.isPresent()) {
-            return ResponseEntity.ok(invoice.get());
+        if (invoiceOpt.isPresent()) {
+            InvoiceResponseDTO responseDTO = invoiceService.convertToDTO(invoiceOpt.get());
+            return ResponseEntity.ok(responseDTO);
         } else {
-            // Aquí se crea el ErrorResponse y se retorna la respuesta con status NOT_FOUND
-            ErrorResponse errorResponse = new ErrorResponse("Factura no encontrada");
+            InvoiceResponseDTO errorResponse = new InvoiceResponseDTO();
+            errorResponse.addError("Factura no encontrada");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
-    public ResponseEntity<?> guardarInvoice(@RequestBody Invoice invoice) {
-        try {
-            Invoice invoiceGuardada = invoiceService.crearInvoice(invoice);
-            return ResponseEntity.created(URI.create("/invoice/" + invoiceGuardada.getId())).body(invoiceGuardada);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    public ResponseEntity<?> guardarInvoice(@RequestBody InvoiceRequestDTO invoiceRequest) {
+        InvoiceResponseDTO response = invoiceService.crearInvoice(invoiceRequest);
+
+        // Si hay errores en la validación
+        if (response.getErrores() != null && !response.getErrores().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+
+        // Si todo ok
+        return ResponseEntity.created(URI.create("/invoice/" + response.getId())).body(response);
     }
 }
